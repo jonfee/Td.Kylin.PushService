@@ -47,7 +47,6 @@ namespace KylinPushService.Appoint.ShangMen
         /// </summary>
         public decimal OrderAmount { get; set; }
 
-
         /// <summary>
         /// 用户备注
         /// </summary>

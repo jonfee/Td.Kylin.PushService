@@ -32,7 +32,7 @@ namespace KylinPushService.Appoint.ShangMen
                     }
 
                     //获取上门订单推送接口配置信息
-                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.WelfareLottery);
+                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.ShangMenCreate);
 
                     if (null == apiConfig) continue;
 
