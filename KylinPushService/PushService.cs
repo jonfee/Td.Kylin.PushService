@@ -3,6 +3,7 @@ using KylinPushService.Appoint.Allot;
 using KylinPushService.Appoint.ShangMen;
 using KylinPushService.Appoint.YuYue;
 using KylinPushService.Core;
+using KylinPushService.Welfare.Lottery;
 using System.ServiceProcess;
 using Td.Cache.Redis;
 
@@ -43,6 +44,11 @@ namespace KylinPushService
         /// </summary>
         private AppointAcceptPushService acceptService;
 
+        /// <summary>
+        /// 福利中奖消息推送服务
+        /// </summary>
+        private WelfareLotteryService lotteryService;
+
         #endregion
 
         protected override void OnStart(string[] args)
@@ -62,6 +68,10 @@ namespace KylinPushService
             //订单接单推送服务开启
             acceptService = new AppointAcceptPushService();
             acceptService.Start();
+
+            //福利中奖消息推送服务开启
+            lotteryService = new WelfareLotteryService();
+            lotteryService.Start();
         }
 
         protected override void OnStop()
@@ -77,6 +87,9 @@ namespace KylinPushService
 
             //订单接单推送服务关闭
             acceptService.Stop();
+
+            //福利中奖消息推送服务关闭
+            lotteryService.Stop();
         }
     }
 }
