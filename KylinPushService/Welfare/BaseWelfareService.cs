@@ -1,7 +1,8 @@
 ﻿using StackExchange.Redis;
 using System.Threading;
 using System.Threading.Tasks;
-using Td.Cache.Redis;
+using Td.Kylin.Redis;
+
 
 namespace KylinPushService.Welfare
 {

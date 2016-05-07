@@ -79,6 +79,10 @@
       <HintPath>..\packages\Td.Cache.Redis.1.0.1-alpha\lib\Td.Cache.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Td.Kylin.Redis, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Td.Kylin.Redis.1.0.5-alpha\lib\net46\Td.Kylin.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Appoint\Accept\AppointAcceptPushService.cs" />

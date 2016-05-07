@@ -3,7 +3,7 @@ using KylinPushService.Core;
 using KylinPushService.Core.Loger;
 using System;
 using System.Threading;
-using Td.Cache.Redis;
+using Td.Kylin.Redis;
 
 namespace KylinPushService.Appoint.ShangMen
 {

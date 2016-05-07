@@ -5,7 +5,7 @@ using KylinPushService.Appoint.YuYue;
 using KylinPushService.Core;
 using KylinPushService.Welfare.Lottery;
 using System.ServiceProcess;
-using Td.Cache.Redis;
+using Td.Kylin.Redis;
 
 namespace KylinPushService
 {
