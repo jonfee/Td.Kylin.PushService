@@ -108,6 +108,14 @@
     <Compile Include="Core\Loger\ServerLoger.cs" />
     <Compile Include="Core\Strings.cs" />
     <Compile Include="Core\DefaultClient.cs" />
+    <Compile Include="MerchantOrder\BaseMerchantOrderService.cs" />
+    <Compile Include="MerchantOrder\ConfirmOrder\ConfirmOrderPushService.cs" />
+    <Compile Include="MerchantOrder\ConfirmOrder\ConfirmOrderContent.cs" />
+    <Compile Include="MerchantOrder\MerchantOrderConfig.cs" />
+    <Compile Include="MerchantOrder\PayOrder\PayOrderPushService.cs" />
+    <Compile Include="MerchantOrder\PayOrder\PayOrderContent.cs" />
+    <Compile Include="MerchantOrder\SendOrder\SendOrderPushService.cs" />
+    <Compile Include="MerchantOrder\SendOrder\SendOrderContent.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -130,7 +138,9 @@
     <Compile Include="Welfare\Lottery\WelfareWinnerContent.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="安装卸载\Install.bat" />
     <None Include="安装卸载\Uninstall.bat" />
@@ -143,6 +153,7 @@
       <DependentUpon>PushService.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
