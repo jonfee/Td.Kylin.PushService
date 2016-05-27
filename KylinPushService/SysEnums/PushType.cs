@@ -24,6 +24,30 @@
         /// <summary>
         /// 福利开奖结果推送
         /// </summary>
-        WelfareLottery=16
+        WelfareLottery = 16,
+        /// <summary>
+        /// 用户下单推送给工作端
+        /// </summary>
+        LegworkUserAddOrder = 32,
+        /// <summary>
+        /// 工作端报价，推送给用户端
+        /// </summary>
+        LegworkOffer = 64,
+        /// <summary>
+        /// 用户确认订单,推送给工作端
+        /// </summary>
+        LegworkUserConfirmOrder = 128,
+        /// <summary>
+        /// 工作端确认送达(取送物品)及工作端选择线下支付时(购买物品),推送给用户端
+        /// </summary>
+        LegworkConfirmDelivery = 256,
+        /// <summary>
+        /// 工作端选择线上支付,推送给用户端
+        /// </summary>
+        LegworkDownPay = 512,
+        /// <summary>
+        /// 用户端线上支付成功,推送给工作端
+        /// </summary>
+        LegworkUserTopPay = 1024,
     }
 }

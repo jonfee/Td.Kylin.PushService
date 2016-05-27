@@ -5,6 +5,7 @@ using KylinPushService.Appoint.YuYue;
 using KylinPushService.Core;
 using KylinPushService.Welfare.Lottery;
 using System.ServiceProcess;
+using KylinPushService.LegworkOrder.PushService;
 using Td.Kylin.Redis;
 
 namespace KylinPushService
@@ -49,6 +50,13 @@ namespace KylinPushService
         /// </summary>
         private WelfareLotteryService lotteryService;
 
+        private AssignOrderPushService _AssignOrderPushService;
+        private OrderConfirmPushService _OrderConfirmPushService;
+        private OrderDeliveryPushService _OrderDeliveryPushService;
+        private OrderOfferPushService _OrderOfferPushService;
+        private PaymentCompletePushService _PaymentCompletePushService;
+        private RequestPaymentPushService _RequestPaymentPushService;
+
         #endregion
 
         protected override void OnStart(string[] args)
@@ -72,6 +80,21 @@ namespace KylinPushService
             //福利中奖消息推送服务开启
             lotteryService = new WelfareLotteryService();
             lotteryService.Start();
+
+            _AssignOrderPushService = new AssignOrderPushService();
+            _AssignOrderPushService.Start();
+            _OrderConfirmPushService = new OrderConfirmPushService();
+            _OrderConfirmPushService.Start();
+            _OrderDeliveryPushService = new OrderDeliveryPushService();
+            _OrderDeliveryPushService.Start();
+            _OrderDeliveryPushService = new OrderDeliveryPushService();
+            _OrderDeliveryPushService.Start();
+            _OrderOfferPushService = new OrderOfferPushService();
+            _OrderOfferPushService.Start();
+            _PaymentCompletePushService = new PaymentCompletePushService();
+            _PaymentCompletePushService.Start();
+            _RequestPaymentPushService = new RequestPaymentPushService();
+            _RequestPaymentPushService.Start();
         }
 
         protected override void OnStop()
@@ -90,6 +113,14 @@ namespace KylinPushService
 
             //福利中奖消息推送服务关闭
             lotteryService.Stop();
+
+            _AssignOrderPushService.Stop();
+            _OrderConfirmPushService.Stop();
+            _OrderDeliveryPushService.Stop();
+            _OrderOfferPushService.Stop();
+            _PaymentCompletePushService.Stop();
+            _RequestPaymentPushService.Stop();
+
         }
     }
 }
