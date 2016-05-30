@@ -56,6 +56,7 @@ namespace KylinPushService
         private OrderOfferPushService _OrderOfferPushService;
         private PaymentCompletePushService _PaymentCompletePushService;
         private RequestPaymentPushService _RequestPaymentPushService;
+        private MessageBuyPushService _MessageBuyPushService;
 
         #endregion
 
@@ -95,6 +96,8 @@ namespace KylinPushService
             _PaymentCompletePushService.Start();
             _RequestPaymentPushService = new RequestPaymentPushService();
             _RequestPaymentPushService.Start();
+            _MessageBuyPushService = new MessageBuyPushService();
+            _MessageBuyPushService.Start();
         }
 
         protected override void OnStop()
@@ -120,6 +123,7 @@ namespace KylinPushService
             _OrderOfferPushService.Stop();
             _PaymentCompletePushService.Stop();
             _RequestPaymentPushService.Stop();
+            _MessageBuyPushService.Stop();
 
         }
     }

@@ -111,11 +111,13 @@
     <Compile Include="LegworkOrder\BaseLegworkService.cs" />
     <Compile Include="LegworkOrder\LegworkConfig.cs" />
     <Compile Include="LegworkOrder\Model\AssignOrderPushContent.cs" />
+    <Compile Include="LegworkOrder\Model\MessageBuyPushContent.cs" />
     <Compile Include="LegworkOrder\Model\OrderConfirmPushContent.cs" />
     <Compile Include="LegworkOrder\Model\OrderDeliveryPushContent.cs" />
     <Compile Include="LegworkOrder\Model\OrderOfferPushContent.cs" />
     <Compile Include="LegworkOrder\Model\PaymentCompletePushContent.cs" />
     <Compile Include="LegworkOrder\Model\RequestPaymentPushContent.cs" />
+    <Compile Include="LegworkOrder\PushService\MessageBuyPushService.cs" />
     <Compile Include="LegworkOrder\PushService\OrderConfirmPushService.cs" />
     <Compile Include="LegworkOrder\PushService\OrderDeliveryPushService.cs" />
     <Compile Include="LegworkOrder\PushService\OrderOfferPushService.cs" />

@@ -51,6 +51,7 @@ namespace KylinPushService.LegworkOrder
             /// 用户端线上支付成功,推送给工作端数据Key
             /// </summary>
             public static string LegworkUserTopPay { get { return ConfigurationManager.AppSettings["LegworkUserTopPay"]; } }
+            public static string LegworkMessageBuy { get { return ConfigurationManager.AppSettings["LegworkMessageBuy"]; } }
         }
     }
 }
