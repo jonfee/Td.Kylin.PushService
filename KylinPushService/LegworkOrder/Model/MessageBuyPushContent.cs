@@ -30,5 +30,6 @@ namespace KylinPushService.LegworkOrder.Model
             get;
             set;
         }
+
     }
 }

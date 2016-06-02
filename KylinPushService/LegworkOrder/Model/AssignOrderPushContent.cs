@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace KylinPushService.LegworkOrder.Model
 {
-	/// <summary>
-	/// 指派订单推送内容。
-	/// </summary>
+    /// <summary>
+    /// 指派订单推送内容。
+    /// </summary>
     public class AssignOrderPushContent
     {
         /// <summary>
@@ -39,6 +39,14 @@ namespace KylinPushService.LegworkOrder.Model
         /// 订单类型。
         /// </summary>
         public short OrderType
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// 订单创建时间
+        /// </summary>
+        public DateTime CreateTime
         {
             get;
             set;

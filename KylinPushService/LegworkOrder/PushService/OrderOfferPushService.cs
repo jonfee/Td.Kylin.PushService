@@ -9,11 +9,11 @@ using KylinPushService.Core;
 using KylinPushService.Core.Loger;
 using KylinPushService.LegworkOrder.Model;
 using Td.Kylin.Redis;
-
 namespace KylinPushService.LegworkOrder.PushService
 {
     public class OrderOfferPushService : BaseLegworkService
     {
+        private static List<OrderOfferPushContent> listOfferPushContents = new List<OrderOfferPushContent>();
 
         /// <summary>
         /// 执行
@@ -24,6 +24,8 @@ namespace KylinPushService.LegworkOrder.PushService
             {
                 try
                 {
+                    var legworkGlobalConfigCache = Td.Kylin.DataCache.CacheCollection.LegworkGlobalConfigCache.Value()?.FirstOrDefault();
+
                     //从预约订单推送消息数据链表左边起获取一条数据
                     OrderOfferPushContent content = RedisDB.ListLeftPop<OrderOfferPushContent>(LegworkConfig.RedisKey.LegworkOffer);
 
@@ -33,6 +35,46 @@ namespace KylinPushService.LegworkOrder.PushService
                         Thread.Sleep(1000);
                         continue;
                     }
+                    //不存在配置
+                    if (null == legworkGlobalConfigCache)
+                    {
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+
+                    listOfferPushContents.Add(content);
+                    DateTime lastTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTimeout);
+
+                    DateTime tasktTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTime);
+
+                    TimeSpan duetime = tasktTime.Subtract(DateTime.Now);    //延迟执行时间（以毫秒为单位）
+
+                    //超过等待报价时间
+                    if (duetime.Ticks < 0)
+                    {
+                        //未达到推送人数-继续等待
+                        if (listOfferPushContents.Count() != legworkGlobalConfigCache.QuotationWaitingWorkers)
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                        else //达到推送人数，取价格报价最低的立即推送
+                        {
+                            content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
+                        }
+
+                        //超过报价超时时间.存在1人报价立即推送
+                        if (lastTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
+                        {
+                            content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
+                        }
+                    }
+                    else
+                    {
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+
 
                     //获取预约订单推送接口配置信息
                     var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.LegworkOffer);

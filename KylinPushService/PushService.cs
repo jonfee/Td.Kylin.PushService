@@ -5,7 +5,10 @@ using KylinPushService.Appoint.YuYue;
 using KylinPushService.Core;
 using KylinPushService.Welfare.Lottery;
 using System.ServiceProcess;
+using KylinPushService.Core.Loger;
 using KylinPushService.LegworkOrder.PushService;
+using Td.Kylin.DataCache;
+using Td.Kylin.EnumLibrary;
 using Td.Kylin.Redis;
 
 namespace KylinPushService
@@ -21,6 +24,8 @@ namespace KylinPushService
 
             //注册Redis
             RedisInjection.UseRedis(Configs.RedisConfiguration);
+            DataCacheInjection.UseDataCache(Configs.RedisConfiguration, SqlProviderType.SqlServer, Configs.ConnectionString);
+
         }
 
         #region 服务对象

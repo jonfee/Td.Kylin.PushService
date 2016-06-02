@@ -72,5 +72,13 @@ namespace KylinPushService.LegworkOrder.Model
 			get;
 			set;
 		}
-	}
+        /// <summary>
+        /// 订单创建时间
+        /// </summary>
+        public DateTime CreateTime
+        {
+            get;
+            set;
+        }
+    }
 }
