@@ -49,5 +49,9 @@
         /// 用户端线上支付成功,推送给工作端
         /// </summary>
         LegworkUserTopPay = 1024,
+        /// <summary>
+        /// 提醒购买
+        /// </summary>
+        LegworkMessageBuy = 2048
     }
 }

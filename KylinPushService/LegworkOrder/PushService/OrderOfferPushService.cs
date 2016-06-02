@@ -20,17 +20,20 @@ namespace KylinPushService.LegworkOrder.PushService
         /// </summary>
         public override void Execute()
         {
+            var legworkGlobalConfigCache = Td.Kylin.DataCache.CacheCollection.LegworkGlobalConfigCache.Value()?.FirstOrDefault();
+            var lastTime = DateTime.Now;
+            var tasktTime = DateTime.Now;
+            TimeSpan duetime = new TimeSpan();
+
             while (true)
             {
                 try
                 {
-                    var legworkGlobalConfigCache = Td.Kylin.DataCache.CacheCollection.LegworkGlobalConfigCache.Value()?.FirstOrDefault();
-
                     //从预约订单推送消息数据链表左边起获取一条数据
                     OrderOfferPushContent content = RedisDB.ListLeftPop<OrderOfferPushContent>(LegworkConfig.RedisKey.LegworkOffer);
 
                     //不存在，则休眠1秒钟，避免CPU空转
-                    if (null == content)
+                    if (null == content && !listOfferPushContents.Any())
                     {
                         Thread.Sleep(1000);
                         continue;
@@ -42,15 +45,19 @@ namespace KylinPushService.LegworkOrder.PushService
                         continue;
                     }
 
-                    listOfferPushContents.Add(content);
-                    DateTime lastTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTimeout);
+                    if (content != null)
+                    {
+                        listOfferPushContents.Add(content);
+                        lastTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTimeout);
 
-                    DateTime tasktTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTime);
+                        tasktTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTime);
+                        duetime = tasktTime.Subtract(DateTime.Now);//延迟执行时间（以毫秒为单位）
+                    }
 
-                    TimeSpan duetime = tasktTime.Subtract(DateTime.Now);    //延迟执行时间（以毫秒为单位）
+
 
                     //超过等待报价时间
-                    if (duetime.Ticks < 0)
+                    if (duetime.Ticks < 0 && listOfferPushContents.Count() > 0)
                     {
                         //未达到推送人数-继续等待
                         if (listOfferPushContents.Count() != legworkGlobalConfigCache.QuotationWaitingWorkers)
@@ -62,12 +69,11 @@ namespace KylinPushService.LegworkOrder.PushService
                         {
                             content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
                         }
-
-                        //超过报价超时时间.存在1人报价立即推送
-                        if (lastTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
-                        {
-                            content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
-                        }
+                    }
+                    //超过报价超时时间.存在1人报价立即推送
+                    else if (lastTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
+                    {
+                        content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
                     }
                     else
                     {
@@ -93,6 +99,7 @@ namespace KylinPushService.LegworkOrder.PushService
                     {
                         var postRst = DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
                     }
+                    listOfferPushContents.Clear();
                 }
                 catch (Exception ex)
                 {
