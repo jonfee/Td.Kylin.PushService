@@ -49,15 +49,13 @@ namespace KylinPushService.LegworkOrder.PushService
                     {
                         listOfferPushContents.Add(content);
                         lastTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTimeout);
-
                         tasktTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTime);
-                        duetime = tasktTime.Subtract(DateTime.Now);//延迟执行时间（以毫秒为单位）
                     }
 
 
 
                     //超过等待报价时间
-                    if (duetime.Ticks < 0 && listOfferPushContents.Count() > 0)
+                    if (tasktTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
                     {
                         //未达到推送人数-继续等待
                         if (listOfferPushContents.Count() != legworkGlobalConfigCache.QuotationWaitingWorkers)
