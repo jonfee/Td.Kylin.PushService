@@ -51,7 +51,7 @@ namespace KylinPushService.MerchantOrder.PayOrder
                 catch (Exception ex)
                 {
                     //异常处理
-                    ExceptionLoger loger = new ExceptionLoger();
+                    ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                     loger.Write("商家订单用户付款后消息推送异常", ex);
                 }
             }

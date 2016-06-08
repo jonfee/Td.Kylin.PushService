@@ -51,7 +51,7 @@ namespace KylinPushService.Appoint.Accept
                 catch (Exception ex)
                 {
                     //异常处理
-                    ExceptionLoger loger = new ExceptionLoger();
+                    ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                     loger.Write("上门预约订单接单后消息推送异常", ex);
                 }
             }

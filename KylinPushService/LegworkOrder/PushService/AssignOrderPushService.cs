@@ -20,6 +20,7 @@ namespace KylinPushService.LegworkOrder.PushService
         /// </summary>
         public override void Execute()
         {
+            int error = 0;
             while (true)
             {
                 try
@@ -49,14 +50,20 @@ namespace KylinPushService.LegworkOrder.PushService
                     else if (apiConfig.Method == "post")
                     {
                         var postRst = DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
+                        ExceptionLoger loger = new ExceptionLoger(@"/logs/Sccess" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
+                        loger.Success("用户下单推送给工作端送时异常", "推送结果:" + postRst);
                     }
                 }
                 catch (Exception ex)
                 {
-                    //异常处理
-                    ExceptionLoger loger = new ExceptionLoger();
-                    loger.Write("用户下单推送给工作端送时异常", ex);
+                    if (error++ <= 5)
+                    {
+                        //异常处理
+                        ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
+                        loger.Write("用户下单推送给工作端送时异常", ex);
+                    }
                 }
+                error = 0;
             }
         }
     }

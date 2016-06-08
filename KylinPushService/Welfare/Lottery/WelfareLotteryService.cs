@@ -48,7 +48,7 @@ namespace KylinPushService.Welfare.Lottery
                 catch (Exception ex)
                 {
                     //异常处理
-                    ExceptionLoger loger = new ExceptionLoger();
+                    ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                     loger.Write("福利中奖消息推送异常", ex);
                 }
             }
