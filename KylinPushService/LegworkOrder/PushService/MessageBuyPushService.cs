@@ -20,7 +20,7 @@ namespace KylinPushService.LegworkOrder.PushService
         public override void Execute()
         {
             int error = 0;
-            while(true)
+            while (true)
             {
                 try
                 {
@@ -28,35 +28,35 @@ namespace KylinPushService.LegworkOrder.PushService
                     MessageBuyPushContent content = RedisDB.ListLeftPop<MessageBuyPushContent>(LegworkConfig.RedisKey.LegworkMessageBuy);
 
                     //不存在，则休眠1秒钟，避免CPU空转
-                    if(null == content)
+                    if (null == content)
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(100);
                         continue;
                     }
 
                     //获取预约订单推送接口配置信息
                     var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.LegworkMessageBuy);
 
-                    if(null == apiConfig)
+                    if (null == apiConfig)
                         continue;
 
                     //将订单数据转换成为字典以便参与接口加密
                     var dic = content.ToMap();
 
-                    if(apiConfig.Method == "get")
+                    if (apiConfig.Method == "get")
                     {
-                        var getRst = DefaultClient.DoGet(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
+                        DefaultClient.DoGet(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
                     }
-                    else if(apiConfig.Method == "post")
+                    else if (apiConfig.Method == "post")
                     {
-                        var postRst = DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
+                        DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Sccess" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                        loger.Success("提醒购买，推送给工作端", "推送结果:" + postRst);
+                        loger.Success("用户下单推送给工作端送时异常", "推送结果:" + content.OrderCode);
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    if(error++ <= 5)
+                    if (error++ <= 5)
                     {
                         //异常处理
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");

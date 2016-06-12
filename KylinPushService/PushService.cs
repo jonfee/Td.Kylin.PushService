@@ -68,20 +68,20 @@ namespace KylinPushService
         protected override void OnStart(string[] args)
         {
             //上门订单推送服务开启
-            shangMenService = new ShangMenPushService();
-            shangMenService.Start();
+            //shangMenService = new ShangMenPushService();
+            //shangMenService.Start();
 
             //预约订单推送服务开启
-            yuyueService = new YuYuePushService();
-            yuyueService.Start();
+            //yuyueService = new YuYuePushService();
+            //yuyueService.Start();
 
             //指派订单推送服务开启
-            allotService = new AppointAllotPushService();
-            allotService.Start();
+            //allotService = new AppointAllotPushService();
+            //allotService.Start();
 
-            //订单接单推送服务开启
-            acceptService = new AppointAcceptPushService();
-            acceptService.Start();
+            ////订单接单推送服务开启
+            //acceptService = new AppointAcceptPushService();
+            //acceptService.Start();
 
             //福利中奖消息推送服务开启
             lotteryService = new WelfareLotteryService();

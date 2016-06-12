@@ -36,13 +36,13 @@ namespace KylinPushService.LegworkOrder.PushService
                     //不存在，则休眠1秒钟，避免CPU空转
                     if (null == content&& !listOfferPushContents.Any())
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(100);
                         continue;
                     }
                     //不存在配置
                     if (null == legworkGlobalConfigCache)
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(100);
                         continue;
                     }
 
@@ -61,7 +61,7 @@ namespace KylinPushService.LegworkOrder.PushService
                         //未达到推送人数-继续等待
                         if (listOfferPushContents.Count() != legworkGlobalConfigCache.QuotationWaitingWorkers)
                         {
-                            Thread.Sleep(1000);
+                            Thread.Sleep(100);
                             continue;
                         }
                         else //达到推送人数，取价格报价最低的立即推送
@@ -76,7 +76,7 @@ namespace KylinPushService.LegworkOrder.PushService
                     }
                     else
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(100);
                         continue;
                     }
 
@@ -92,13 +92,13 @@ namespace KylinPushService.LegworkOrder.PushService
 
                     if (apiConfig.Method == "get")
                     {
-                        var getRst = DefaultClient.DoGet(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
+                        DefaultClient.DoGet(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
                     }
                     else if (apiConfig.Method == "post")
                     {
-                        var postRst = DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
+                        DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Sccess" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                        loger.Success("工作端报价，推送给用户端", "推送结果:" + postRst);
+                        loger.Success("用户下单推送给工作端送时异常", "推送结果:" + content.OrderCode);
                     }
                     listOfferPushContents.Clear();
                 }

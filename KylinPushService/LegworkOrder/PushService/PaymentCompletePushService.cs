@@ -31,7 +31,7 @@ namespace KylinPushService.LegworkOrder.PushService
                     //不存在，则休眠1秒钟，避免CPU空转
                     if (null == content)
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(100);
                         continue;
                     }
 
@@ -46,13 +46,13 @@ namespace KylinPushService.LegworkOrder.PushService
 
                     if (apiConfig.Method == "get")
                     {
-                        var getRst = DefaultClient.DoGet(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
+                        DefaultClient.DoGet(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
                     }
                     else if (apiConfig.Method == "post")
                     {
-                        var postRst = DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
+                        DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Sccess" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                        loger.Success("用户线上支付成功，推送给工作端", "推送结果:" + postRst);
+                        loger.Success("用户下单推送给工作端送时异常", "推送结果:" + content.OrderCode);
                     }
                 }
                 catch (Exception ex)
