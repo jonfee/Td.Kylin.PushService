@@ -52,7 +52,7 @@ namespace KylinPushService.LegworkOrder.PushService
                     {
                         DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Sccess" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                        loger.Success("用户下单推送给工作端送时异常", "推送结果:" + content.OrderCode);
+                        loger.Success("用户确认订单，推送给工作端推送时", "推送结果:订单编号为“" + content.OrderCode + "”");
                     }
                 }
                 catch (Exception ex)
@@ -61,7 +61,7 @@ namespace KylinPushService.LegworkOrder.PushService
                     {
                         //异常处理
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                        loger.Write("用户确认订单，推送给工作端送时异常", ex);
+                        loger.Write("用户确认订单，推送给工作端送推时异常", ex);
                     }
                 }
                 error = 0;
