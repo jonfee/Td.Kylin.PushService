@@ -33,11 +33,20 @@ namespace KylinPushService.LegworkOrder.PushService
                     //从预约订单推送消息数据链表左边起获取一条数据
                     OrderOfferPushContent content = RedisDB.ListLeftPop<OrderOfferPushContent>(LegworkConfig.RedisKey.LegworkOffer);
 
-                    //不存在，则休眠1秒钟，避免CPU空转
-                    if (null == content&& !listOfferPushContents.Any())
+                    //当数据第一次进入 content 和 listOfferPushContents集合同时为空的情况下
+                    if (null == content && !listOfferPushContents.Any())
                     {
                         Thread.Sleep(100);
                         continue;
+                    }
+                    else // 接收到推送消息 content 不为空 
+                    {
+                        if (content != null) // 防止 content 为空时加入list集合中
+                        {
+                            listOfferPushContents.Add(content);
+                            lastTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTimeout);
+                            tasktTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTime);
+                        }
                     }
                     //不存在配置
                     if (null == legworkGlobalConfigCache)
@@ -45,22 +54,18 @@ namespace KylinPushService.LegworkOrder.PushService
                         Thread.Sleep(100);
                         continue;
                     }
-
-                    if (content != null)
+                    //超过报价超时时间.存在1人报价立即推送
+                    if (lastTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
                     {
-                        listOfferPushContents.Add(content);
-                        lastTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTimeout);
-                        tasktTime = content.CreateTime.AddSeconds(legworkGlobalConfigCache.QuotationWaitingTime);
+                        content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
                     }
-
-
-
                     //超过等待报价时间
-                    if (tasktTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
+                    else if (tasktTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
                     {
                         //未达到推送人数-继续等待
                         if (listOfferPushContents.Count() != legworkGlobalConfigCache.QuotationWaitingWorkers)
                         {
+
                             Thread.Sleep(100);
                             continue;
                         }
@@ -69,11 +74,7 @@ namespace KylinPushService.LegworkOrder.PushService
                             content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
                         }
                     }
-                    //超过报价超时时间.存在1人报价立即推送
-                    else if (lastTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
-                    {
-                        content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
-                    }
+
                     else
                     {
                         Thread.Sleep(100);
@@ -101,6 +102,7 @@ namespace KylinPushService.LegworkOrder.PushService
                         loger.Success("用户下单推送给工作端送时异常", "推送结果:" + content.OrderCode);
                     }
                     listOfferPushContents.Clear();
+
                 }
                 catch (Exception ex)
                 {
