@@ -63,6 +63,8 @@ namespace KylinPushService.LegworkOrder.PushService
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                         loger.Write("工作端确定送达，推送给用户端推送时异常", ex);
                     }
+                    Thread.Sleep(100);
+                    continue;
                 }
                 error = 0;
             }
