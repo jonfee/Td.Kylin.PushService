@@ -33,6 +33,10 @@ namespace KylinPushService.LegworkOrder.PushService
                     //从预约订单推送消息数据链表左边起获取一条数据
                     OrderOfferPushContent content = RedisDB.ListLeftPop<OrderOfferPushContent>(LegworkConfig.RedisKey.LegworkOffer);
 
+                    /*
+                        排队等待算法待完成
+                    */
+
                     //当数据第一次进入 content 和 listOfferPushContents集合同时为空的情况下
                     if (null == content && !listOfferPushContents.Any())
                     {
@@ -55,7 +59,7 @@ namespace KylinPushService.LegworkOrder.PushService
                         continue;
                     }
                     //超过报价超时时间.存在1人报价立即推送
-                    if (lastTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
+                    if (lastTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.GroupBy(t => t.OrderID).Count() > 0)
                     {
                         content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
                     }
