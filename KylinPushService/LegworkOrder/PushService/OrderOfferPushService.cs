@@ -30,6 +30,40 @@ namespace KylinPushService.LegworkOrder.PushService
                 int error = 0;
                 try
                 {
+                    //listOfferPushContents.Add(new OrderOfferPushContent()
+                    //{
+                    //    PushCode = "32ABB80484BDC0DE",
+                    //    OrderID = 6296348697911427073,
+                    //    OrderCode = "201606151728406388",
+                    //    Charge = 2,
+                    //    WorkerID = 0,
+                    //    WorkerName = null,
+                    //    Distance = 0.5952,
+                    //    CreateTime = DateTime.Now
+                    //});
+                    //listOfferPushContents.Add(new OrderOfferPushContent()
+                    //{
+                    //    PushCode = "F5D77DA82D78A1E9",
+                    //    OrderID = 6296348697911427073,
+                    //    OrderCode = "201606151728406388",
+                    //    Charge = 5,
+                    //    WorkerID = 0,
+                    //    WorkerName = null,
+                    //    Distance = 0.5952,
+                    //    CreateTime = DateTime.Now
+                    //});
+
+                    //listOfferPushContents.Add(new OrderOfferPushContent()
+                    //{
+                    //    PushCode = "F5D77DA82D78A1E8",
+                    //    OrderID = 6296348697911427073,
+                    //    OrderCode = "201606151728406388",
+                    //    Charge = 5,
+                    //    WorkerID = 0,
+                    //    WorkerName = null,
+                    //    Distance = 0.5952,
+                    //    CreateTime = DateTime.Now
+                    //});
                     //从预约订单推送消息数据链表左边起获取一条数据
                     OrderOfferPushContent content = RedisDB.ListLeftPop<OrderOfferPushContent>(LegworkConfig.RedisKey.LegworkOffer);
 
@@ -59,7 +93,7 @@ namespace KylinPushService.LegworkOrder.PushService
                         continue;
                     }
                     //超过报价超时时间.存在1人报价立即推送
-                    if (lastTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.GroupBy(t => t.OrderID).Count() > 0)
+                    if (lastTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
                     {
                         content = listOfferPushContents.OrderBy(q => q.Charge).FirstOrDefault();
                     }
@@ -75,7 +109,7 @@ namespace KylinPushService.LegworkOrder.PushService
                         }
                         else //达到推送人数，取价格报价最低的立即推送
                         {
-                            content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
+                            content = listOfferPushContents.OrderBy(q => q.Charge).FirstOrDefault();
                         }
                     }
 
@@ -105,7 +139,11 @@ namespace KylinPushService.LegworkOrder.PushService
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Sccess" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                         loger.Success("工作端报价，推送给用户端送时", "推送结果:订单编号为“" + content.OrderCode + "”");
                     }
-                    listOfferPushContents.Clear();
+                    var list = listOfferPushContents.Where(q => q.OrderID == content.OrderID).ToList();
+                    foreach (var item in list)
+                    {
+                        listOfferPushContents.Remove(item);
+                    }
 
                 }
                 catch (Exception ex)
