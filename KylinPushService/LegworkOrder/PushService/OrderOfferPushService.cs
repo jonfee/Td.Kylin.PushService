@@ -61,7 +61,7 @@ namespace KylinPushService.LegworkOrder.PushService
                     //超过报价超时时间.存在1人报价立即推送
                     if (lastTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.GroupBy(t => t.OrderID).Count() > 0)
                     {
-                        content = listOfferPushContents.OrderByDescending(q => q.Charge).FirstOrDefault();
+                        content = listOfferPushContents.OrderBy(q => q.Charge).FirstOrDefault();
                     }
                     //超过等待报价时间
                     else if (tasktTime.Subtract(DateTime.Now).Ticks < 0 && listOfferPushContents.Count() > 0)
