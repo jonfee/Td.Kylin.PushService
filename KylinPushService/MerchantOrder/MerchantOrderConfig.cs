@@ -44,6 +44,10 @@ namespace KylinPushService.MerchantOrder
             /// 商家订单用户确认收货
             /// </summary>
             public static string ConfirmMerchantOrder { get { return ConfigurationManager.AppSettings["ConfirmMerchantOrder"]; } }
+            /// <summary>
+            /// 用户催单
+            /// </summary>
+            public static string UserMessageBuy { get { return ConfigurationManager.AppSettings["UserMessageBuy"]; } }
 
         }
     }

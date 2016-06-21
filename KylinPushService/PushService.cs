@@ -7,6 +7,7 @@ using KylinPushService.Welfare.Lottery;
 using System.ServiceProcess;
 using KylinPushService.Core.Loger;
 using KylinPushService.LegworkOrder.PushService;
+using KylinPushService.MerchantOrder.UserMessageBuy;
 using Td.Kylin.DataCache;
 using Td.Kylin.EnumLibrary;
 using Td.Kylin.Redis;
@@ -34,6 +35,7 @@ namespace KylinPushService
         /// 上门订单推送服务
         /// </summary>
         private ShangMenPushService shangMenService;
+        private UserMessageBuyPushService userMessageBuyService;
 
         /// <summary>
         /// 预约订单推送服务
@@ -86,6 +88,8 @@ namespace KylinPushService
             //福利中奖消息推送服务开启
             lotteryService = new WelfareLotteryService();
             lotteryService.Start();
+            userMessageBuyService = new UserMessageBuyPushService();
+            userMessageBuyService.Start();
 
             _AssignOrderPushService = new AssignOrderPushService();
             _AssignOrderPushService.Start();
@@ -121,6 +125,7 @@ namespace KylinPushService
 
             //福利中奖消息推送服务关闭
             lotteryService.Stop();
+            userMessageBuyService.Stop();
 
             _AssignOrderPushService.Stop();
             _OrderConfirmPushService.Stop();

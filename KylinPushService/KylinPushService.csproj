@@ -239,6 +239,8 @@
     <Compile Include="MerchantOrder\PayOrder\PayOrderContent.cs" />
     <Compile Include="MerchantOrder\SendOrder\SendOrderPushService.cs" />
     <Compile Include="MerchantOrder\SendOrder\SendOrderContent.cs" />
+    <Compile Include="MerchantOrder\UserMessageBuy\UserMessageBuyContent.cs" />
+    <Compile Include="MerchantOrder\UserMessageBuy\UserMessageBuyPushService.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

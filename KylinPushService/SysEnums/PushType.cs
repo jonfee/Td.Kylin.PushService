@@ -52,6 +52,10 @@
         /// <summary>
         /// 提醒购买
         /// </summary>
-        LegworkMessageBuy = 2048
+        LegworkMessageBuy = 2048,
+        /// <summary>
+        /// 用户催单
+        /// </summary>
+        UserMessageBuy = 4096,
     }
 }
