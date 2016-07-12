@@ -32,7 +32,7 @@ namespace KylinPushService.MerchantOrder.SendOrder
                     }
 
                     //获取订单接单推送接口配置信息
-                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.OrderAccept);
+                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.SendMerchantOrder);
 
                     if (null == apiConfig) continue;
 

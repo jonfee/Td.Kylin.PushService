@@ -57,5 +57,10 @@
         /// 用户催单
         /// </summary>
         UserMessageBuy = 4096,
+        /// <summary>
+        /// 商家发货
+        /// </summary>
+        SendMerchantOrder=8192,
+
     }
 }

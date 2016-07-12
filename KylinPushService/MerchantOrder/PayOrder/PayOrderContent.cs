@@ -7,6 +7,8 @@ namespace KylinPushService.MerchantOrder.PayOrder
     /// </summary>
     public class PayOrderContent
     {
+        public string PushCode { get; set; }
+
         /// <summary>
         /// 订单ID
         /// </summary>
