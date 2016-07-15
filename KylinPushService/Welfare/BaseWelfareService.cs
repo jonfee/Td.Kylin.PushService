@@ -1,6 +1,7 @@
 ﻿using StackExchange.Redis;
 using System.Threading;
 using System.Threading.Tasks;
+using KylinPushService.Core;
 using Td.Kylin.Redis;
 
 
@@ -13,7 +14,9 @@ namespace KylinPushService.Welfare
     {
         static BaseWelfareService()
         {
-            RedisDB = RedisManager.Redis.GetDatabase(WelfareConfig.DbIndex);
+            var redis= new RedisContext(Configs.RedisConfiguration);
+
+            RedisDB = redis.GetDatabase(WelfareConfig.DbIndex);
         }
 
         /// <summary>

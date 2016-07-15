@@ -12,7 +12,7 @@ namespace KylinPushService.Appoint
     {
         static BaseAppointService()
         {
-            RedisDB = RedisManager.Redis.GetDatabase(AppointConfig.DbIndex);
+            RedisDB = null;// RedisManager.Redis.GetDatabase(AppointConfig.DbIndex);
         }
 
         /// <summary>

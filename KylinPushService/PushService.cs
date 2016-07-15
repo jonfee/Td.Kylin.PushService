@@ -22,11 +22,16 @@ namespace KylinPushService
         public PushService()
         {
             InitializeComponent();
-
-            //注册Redis
-            RedisInjection.UseRedis(Configs.RedisConfiguration);
-            DataCacheInjection.UseDataCache(Configs.RedisConfiguration, SqlProviderType.SqlServer, Configs.ConnectionString);
-
+            
+            DataCacheInjection.UseDataCache(new CacheInjectionConfig
+            {
+                CacheItems = new[] { CacheItemType.LegworkAreaConfig, CacheItemType.LegworkGlobalConfig, CacheItemType.LegworkGoodsCategory },
+                InitIfNull = false,
+                KeepAlive = true,
+                RedisConnectionString = Configs.RedisConfiguration,
+                SqlConnectionString = Configs.ConnectionString,
+                SqlType = SqlProviderType.SqlServer
+            });
         }
 
         #region 服务对象

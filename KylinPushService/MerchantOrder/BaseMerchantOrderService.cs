@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using KylinPushService.Core;
 using Td.Kylin.Redis;
 
 namespace KylinPushService.MerchantOrder
@@ -13,7 +14,9 @@ namespace KylinPushService.MerchantOrder
     {
         static BaseMerchantOrderService()
         {
-            RedisDB = RedisManager.Redis.GetDatabase(MerchantOrderConfig.DbIndex);
+            var redis = new RedisContext(Configs.RedisConfiguration);
+
+            RedisDB = redis.GetDatabase(MerchantOrderConfig.DbIndex);
         }
 
         /// <summary>

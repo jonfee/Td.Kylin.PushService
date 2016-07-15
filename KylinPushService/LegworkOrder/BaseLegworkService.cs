@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using KylinPushService.Core;
 using StackExchange.Redis;
 using Td.Kylin.Redis;
 
@@ -13,7 +14,9 @@ namespace KylinPushService.LegworkOrder
     {
         static BaseLegworkService()
         {
-            RedisDB = RedisManager.Redis.GetDatabase(LegworkConfig.DbIndex);
+            var redis = new RedisContext(Configs.RedisConfiguration);
+
+            RedisDB = redis.GetDatabase(LegworkConfig.DbIndex);
         }
 
         /// <summary>
