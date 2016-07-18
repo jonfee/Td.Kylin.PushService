@@ -20,7 +20,8 @@ namespace KylinPushService.LegworkOrder.PushService
         /// </summary>
         public override void Execute()
         {
-            int error = 0;
+            var ServiceTime = DateTime.Now;
+
             while (true)
             {
                 try
@@ -56,8 +57,9 @@ namespace KylinPushService.LegworkOrder.PushService
                 }
                 catch (Exception ex)
                 {
-                    if (error++ <= 5)
+                    if (ServiceTime.AddHours(1) <= DateTime.Now)
                     {
+                        ServiceTime = DateTime.Now;
                         //异常处理
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                         loger.Write("工作端选择线上支付，推送给用户端异常", ex);
@@ -65,7 +67,6 @@ namespace KylinPushService.LegworkOrder.PushService
                     Thread.Sleep(100);
                     continue;
                 }
-                error = 0;
             }
         }
     }

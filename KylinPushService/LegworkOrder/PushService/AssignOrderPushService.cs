@@ -20,7 +20,7 @@ namespace KylinPushService.LegworkOrder.PushService
         /// </summary>
         public override void Execute()
         {
-            int error = 0;
+            var ServiceTime = DateTime.Now;
             while (true)
             {
                 try
@@ -56,16 +56,16 @@ namespace KylinPushService.LegworkOrder.PushService
                 }
                 catch (Exception ex)
                 {
-                    if (error++ <= 5)
+                    if (ServiceTime.AddHours(1)>=DateTime.Now)
                     {
+                        ServiceTime = DateTime.Now;
                         //异常处理
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                        loger.Write("用户下单推送给工作端送时异常", ex);
+                        loger.Write("用户下单，用户下单推送给工作端", ex);
                     }
                     Thread.Sleep(100);
                     continue;
                 }
-                error = 0;
             }
         }
     }

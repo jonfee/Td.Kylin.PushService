@@ -24,10 +24,11 @@ namespace KylinPushService.LegworkOrder.PushService
             var lastTime = DateTime.Now;
             var tasktTime = DateTime.Now;
             TimeSpan duetime = new TimeSpan();
+            var ServiceTime = DateTime.Now;
 
             while (true)
             {
-                int error = 0;
+    
                 try
                 {
                     //listOfferPushContents.Add(new OrderOfferPushContent()
@@ -148,8 +149,9 @@ namespace KylinPushService.LegworkOrder.PushService
                 }
                 catch (Exception ex)
                 {
-                    if (error++ <= 5)
+                    if (ServiceTime.AddHours(1) <= DateTime.Now)
                     {
+                        ServiceTime = DateTime.Now;
                         //异常处理
                         ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                         loger.Write("工作端报价，推送给用户端送时异常", ex);
@@ -157,7 +159,6 @@ namespace KylinPushService.LegworkOrder.PushService
                     Thread.Sleep(100);
                     continue;
                 }
-                error = 0;
             }
         }
     }
