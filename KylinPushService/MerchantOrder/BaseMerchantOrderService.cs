@@ -12,17 +12,16 @@ namespace KylinPushService.MerchantOrder
 {
     public abstract class BaseMerchantOrderService
     {
-        static BaseMerchantOrderService()
-        {
-            var redis = new RedisContext(Configs.RedisConfiguration);
-
-            RedisDB = redis.GetDatabase(MerchantOrderConfig.DbIndex);
-        }
-
         /// <summary>
-        /// 上门预约推送信息在Redis中所在的数据库
+        /// 商家订单推送信息在Redis中所在的数据库
         /// </summary>
-        protected readonly static IDatabase RedisDB;
+        protected IDatabase RedisDB
+        {
+            get
+            {
+                return RedisContext.RedisMultiplexer?.GetDatabase(MerchantOrderConfig.DbIndex);
+            }
+        }
 
         /// <summary>
         /// 当前服务启动的线程

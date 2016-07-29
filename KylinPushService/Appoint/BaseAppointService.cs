@@ -10,15 +10,16 @@ namespace KylinPushService.Appoint
     /// </summary>
     public abstract class BaseAppointService : IPushService
     {
-        static BaseAppointService()
-        {
-            RedisDB = null;// RedisManager.Redis.GetDatabase(AppointConfig.DbIndex);
-        }
-
         /// <summary>
         /// 上门预约推送信息在Redis中所在的数据库
         /// </summary>
-        protected readonly static IDatabase RedisDB;
+        protected IDatabase RedisDB
+        {
+            get
+            {
+                return RedisContext.RedisMultiplexer?.GetDatabase(AppointConfig.DbIndex);
+            }
+        }
 
         /// <summary>
         /// 当前服务启动的线程

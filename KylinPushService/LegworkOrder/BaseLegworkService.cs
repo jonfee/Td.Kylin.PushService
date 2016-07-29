@@ -12,17 +12,16 @@ namespace KylinPushService.LegworkOrder
 {
     public abstract class BaseLegworkService : IPushService
     {
-        static BaseLegworkService()
-        {
-            var redis = new RedisContext(Configs.RedisConfiguration);
-
-            RedisDB = redis.GetDatabase(LegworkConfig.DbIndex);
-        }
-
         /// <summary>
         /// 上门预约推送信息在Redis中所在的数据库
         /// </summary>
-        protected readonly static IDatabase RedisDB;
+        protected IDatabase RedisDB
+        {
+            get
+            {
+                return RedisContext.RedisMultiplexer?.GetDatabase(LegworkConfig.DbIndex);
+            }
+        }
 
         /// <summary>
         /// 当前服务启动的线程

@@ -90,10 +90,6 @@ namespace KylinPushService.ConfigManager
             return null;
         }
 
-
-        /*
-        
-            */
         /// <summary>
         /// 获取配置节点上的属性值
         /// </summary>

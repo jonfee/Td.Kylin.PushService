@@ -29,7 +29,7 @@ namespace KylinPushService.Welfare.Lottery
                     }
 
                     //获取福利开奖结果推送接口配置信息
-                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.ShangMenCreate);
+                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.WelfareLottery);
 
                     if (null == apiConfig) continue;
 

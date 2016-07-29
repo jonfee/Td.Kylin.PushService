@@ -2,15 +2,10 @@
 using KylinPushService.Appoint.Allot;
 using KylinPushService.Appoint.ShangMen;
 using KylinPushService.Appoint.YuYue;
-using KylinPushService.Core;
-using KylinPushService.Welfare.Lottery;
-using System.ServiceProcess;
-using KylinPushService.Core.Loger;
 using KylinPushService.LegworkOrder.PushService;
 using KylinPushService.MerchantOrder.UserMessageBuy;
-using Td.Kylin.DataCache;
-using Td.Kylin.EnumLibrary;
-using Td.Kylin.Redis;
+using KylinPushService.Welfare.Lottery;
+using System.ServiceProcess;
 
 namespace KylinPushService
 {
@@ -23,15 +18,7 @@ namespace KylinPushService
         {
             InitializeComponent();
             
-            DataCacheInjection.UseDataCache(new CacheInjectionConfig
-            {
-                CacheItems = new[] { CacheItemType.LegworkAreaConfig, CacheItemType.LegworkGlobalConfig, CacheItemType.LegworkGoodsCategory },
-                InitIfNull = false,
-                KeepAlive = true,
-                RedisConnectionString = Configs.RedisConfiguration,
-                SqlConnectionString = Configs.ConnectionString,
-                SqlType = SqlProviderType.SqlServer
-            });
+            
         }
 
         #region 服务对象
