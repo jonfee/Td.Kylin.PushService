@@ -3,7 +3,7 @@ using KylinPushService.Core;
 using KylinPushService.Core.Loger;
 using System;
 using System.Threading;
-using Td.Cache.Redis;
+using Td.Kylin.Redis;
 
 namespace KylinPushService.Appoint.ShangMen
 {
@@ -32,7 +32,7 @@ namespace KylinPushService.Appoint.ShangMen
                     }
 
                     //获取上门订单推送接口配置信息
-                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.WelfareLottery);
+                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.ShangMenCreate);
 
                     if (null == apiConfig) continue;
 
@@ -51,7 +51,7 @@ namespace KylinPushService.Appoint.ShangMen
                 catch (Exception ex)
                 {
                     //异常处理
-                    ExceptionLoger loger = new ExceptionLoger();
+                    ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                     loger.Write("上门订单推送消息异常", ex);
                 }
             }

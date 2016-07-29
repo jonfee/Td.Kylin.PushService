@@ -38,8 +38,10 @@ namespace KylinPushService.ConfigManager
                             Config.Secret = text;
                             break;
                         case "api":
+
                             var api = GetApiConfig(node);
-                            if (null != api) Config.ApiConfigs.Add(api);
+                            if (null != api)
+                                Config.ApiConfigs.Add(api);
                             break;
                     }
                 }

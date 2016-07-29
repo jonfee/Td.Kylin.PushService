@@ -1,25 +1,25 @@
 ﻿using StackExchange.Redis;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using KylinPushService.Core;
 using Td.Kylin.Redis;
 
-
-namespace KylinPushService.Welfare
+namespace KylinPushService.MerchantOrder
 {
-    /// <summary>
-    /// 限时福利推送服务抽象基类
-    /// </summary>
-    public abstract class BaseWelfareService : IPushService
+    public abstract class BaseMerchantOrderService
     {
         /// <summary>
-        /// 限时福利推送信息在Redis中所在的数据库
+        /// 商家订单推送信息在Redis中所在的数据库
         /// </summary>
         protected IDatabase RedisDB
         {
             get
             {
-                return RedisContext.RedisMultiplexer?.GetDatabase(WelfareConfig.DbIndex);
+                return RedisContext.RedisMultiplexer?.GetDatabase(MerchantOrderConfig.DbIndex);
             }
         }
 

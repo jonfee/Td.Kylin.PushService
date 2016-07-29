@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using KylinPushService.Core;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
+using Td.Kylin.DataCache;
+using Td.Kylin.EnumLibrary;
 
 namespace KylinPushService
 {
@@ -15,6 +13,17 @@ namespace KylinPushService
         static void Main()
         {
             ServiceBase[] ServicesToRun;
+
+            DataCacheInjection.UseDataCache(new CacheInjectionConfig
+            {
+                CacheItems = new[] { CacheItemType.LegworkAreaConfig, CacheItemType.LegworkGlobalConfig, CacheItemType.LegworkGoodsCategory },
+                InitIfNull = false,
+                KeepAlive = true,
+                RedisConnectionString = Configs.RedisConfiguration,
+                SqlConnectionString = Configs.ConnectionString,
+                SqlType = SqlProviderType.SqlServer
+            });
+
             ServicesToRun = new ServiceBase[]
             {
                 new PushService()

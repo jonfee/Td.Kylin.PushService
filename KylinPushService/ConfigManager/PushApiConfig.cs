@@ -21,5 +21,7 @@ namespace KylinPushService.ConfigManager
         /// 密钥
         /// </summary>
         public string Secret { get; set; }
+
+        
     }
 }

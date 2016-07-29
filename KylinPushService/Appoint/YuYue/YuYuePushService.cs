@@ -3,7 +3,7 @@ using KylinPushService.Core;
 using KylinPushService.Core.Loger;
 using System;
 using System.Threading;
-using Td.Cache.Redis;
+using Td.Kylin.Redis;
 
 namespace KylinPushService.Appoint.YuYue
 {
@@ -51,7 +51,7 @@ namespace KylinPushService.Appoint.YuYue
                 catch (Exception ex)
                 {
                     //异常处理
-                    ExceptionLoger loger = new ExceptionLoger();
+                    ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                     loger.Write("预约订单推送时异常", ex);
                 }
             }

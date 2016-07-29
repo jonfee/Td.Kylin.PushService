@@ -22,4 +22,6 @@ namespace KylinPushService.ConfigManager
         /// </summary>
         public string Method { get; set; }
     }
+
+    
 }

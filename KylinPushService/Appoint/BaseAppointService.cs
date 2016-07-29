@@ -1,7 +1,7 @@
 ﻿using StackExchange.Redis;
 using System.Threading;
 using System.Threading.Tasks;
-using Td.Cache.Redis;
+using Td.Kylin.Redis;
 
 namespace KylinPushService.Appoint
 {
@@ -10,15 +10,16 @@ namespace KylinPushService.Appoint
     /// </summary>
     public abstract class BaseAppointService : IPushService
     {
-        static BaseAppointService()
-        {
-            RedisDB = RedisManager.Redis.GetDatabase(AppointConfig.DbIndex);
-        }
-
         /// <summary>
         /// 上门预约推送信息在Redis中所在的数据库
         /// </summary>
-        protected readonly static IDatabase RedisDB;
+        protected IDatabase RedisDB
+        {
+            get
+            {
+                return RedisContext.RedisMultiplexer?.GetDatabase(AppointConfig.DbIndex);
+            }
+        }
 
         /// <summary>
         /// 当前服务启动的线程

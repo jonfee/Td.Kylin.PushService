@@ -8,7 +8,7 @@ namespace KylinPushService.Core.Loger
     /// </summary>
     public class ExceptionLoger : BaseLoger
     {
-        public ExceptionLoger() : base(@"\logs\exception.txt") { }
+        public ExceptionLoger(string path) : base(path) { }
 
         /// <summary>
         /// 异常信息日志
@@ -27,6 +27,18 @@ namespace KylinPushService.Core.Loger
             sbContent.Append("________________________________________________________________________________________________________________\r\n");
 
             base.LogWrite(sbContent);
+        }
+
+        public void Success(string title, string msg)
+        {
+            StringBuilder sbContent = new StringBuilder();
+            sbContent.Append("________________________________________________________________________________________________________________\r\n\r\n");
+            sbContent.Append("日期：" + System.DateTime.Now.ToString() + "\r\n");
+            sbContent.Append("标题：" + title + "\r\n");
+            sbContent.Append("推送结果：" + msg + "\r\n");
+            sbContent.Append("________________________________________________________________________________________________________________\r\n");
+            base.LogWrite(sbContent);
+
         }
     }
 }

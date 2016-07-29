@@ -16,5 +16,10 @@ namespace KylinPushService.Core
         /// Redis服务器连接配置
         /// </summary>
         public static string RedisConfiguration { get { return ConfigurationManager.AppSettings["RedisConfiguration"]; } }
+
+        /// <summary>
+        /// 数据库服务器连接配置
+        /// </summary>
+        public static string ConnectionString { get { return ConfigurationManager.AppSettings["ConnectionString"]; } }
     }
 }

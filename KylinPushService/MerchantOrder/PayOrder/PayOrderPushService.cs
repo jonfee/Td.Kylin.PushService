@@ -5,12 +5,12 @@ using System;
 using System.Threading;
 using Td.Kylin.Redis;
 
-namespace KylinPushService.Appoint.Allot
+namespace KylinPushService.MerchantOrder.PayOrder
 {
     /// <summary>
-    /// 上门预约订单指派推送服务
+    /// 上门预约订单被接单推送服务
     /// </summary>
-    public class AppointAllotPushService : BaseAppointService
+    public class PayOrderPushService : BaseMerchantOrderService
     {
         /// <summary>
         /// 执行
@@ -21,8 +21,8 @@ namespace KylinPushService.Appoint.Allot
             {
                 try
                 {
-                    //从订单指派推送消息数据链表左边起获取一条数据
-                    AppointOrderAllotContent content = RedisDB.ListLeftPop<AppointOrderAllotContent>(AppointConfig.RedisKey.OrderAllot);
+                    //从订单接单推送消息数据链表左边起获取一条数据
+                    PayOrderContent content = RedisDB.ListLeftPop<PayOrderContent>(MerchantOrderConfig.RedisKey.PayMerchantOrder);
 
                     //不存在，则休眠1秒钟，避免CPU空转
                     if (null == content)
@@ -31,13 +31,13 @@ namespace KylinPushService.Appoint.Allot
                         continue;
                     }
 
-                    //获取订单指派推送接口配置信息
-                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.OrderAllot);
+                    //获取订单接单推送接口配置信息
+                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.OrderAccept);
 
                     if (null == apiConfig) continue;
 
                     //将订单数据转换成为字典以便参与接口加密
-                    var dic = content.ToMap(); 
+                    var dic = content.ToMap();
 
                     if (apiConfig.Method == "get")
                     {
@@ -52,7 +52,7 @@ namespace KylinPushService.Appoint.Allot
                 {
                     //异常处理
                     ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                    loger.Write("上门预约订单指派消息推送异常", ex);
+                    loger.Write("商家订单用户付款后消息推送异常", ex);
                 }
             }
         }

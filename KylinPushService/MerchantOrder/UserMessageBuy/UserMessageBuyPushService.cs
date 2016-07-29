@@ -1,16 +1,17 @@
-﻿using KylinPushService.ConfigManager;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using KylinPushService.ConfigManager;
 using KylinPushService.Core;
 using KylinPushService.Core.Loger;
-using System;
-using System.Threading;
 using Td.Kylin.Redis;
 
-namespace KylinPushService.Appoint.Allot
+namespace KylinPushService.MerchantOrder.UserMessageBuy
 {
-    /// <summary>
-    /// 上门预约订单指派推送服务
-    /// </summary>
-    public class AppointAllotPushService : BaseAppointService
+    public class UserMessageBuyPushService : BaseMerchantOrderService
     {
         /// <summary>
         /// 执行
@@ -21,8 +22,8 @@ namespace KylinPushService.Appoint.Allot
             {
                 try
                 {
-                    //从订单指派推送消息数据链表左边起获取一条数据
-                    AppointOrderAllotContent content = RedisDB.ListLeftPop<AppointOrderAllotContent>(AppointConfig.RedisKey.OrderAllot);
+                    //从订单接单推送消息数据链表左边起获取一条数据
+                    UserMessageBuyContent content = RedisDB.ListLeftPop<UserMessageBuyContent>(MerchantOrderConfig.RedisKey.UserMessageBuy);
 
                     //不存在，则休眠1秒钟，避免CPU空转
                     if (null == content)
@@ -31,28 +32,28 @@ namespace KylinPushService.Appoint.Allot
                         continue;
                     }
 
-                    //获取订单指派推送接口配置信息
-                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.OrderAllot);
+                    //获取订单接单推送接口配置信息
+                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.UserMessageBuy);
 
                     if (null == apiConfig) continue;
 
                     //将订单数据转换成为字典以便参与接口加密
-                    var dic = content.ToMap(); 
+                    var dic = content.ToMap();
 
                     if (apiConfig.Method == "get")
                     {
-                        var getRst = DefaultClient.DoGet(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
+                        DefaultClient.DoGet(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
                     }
                     else if (apiConfig.Method == "post")
                     {
-                        var postRst = DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
+                        DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
                     }
                 }
                 catch (Exception ex)
                 {
                     //异常处理
                     ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                    loger.Write("上门预约订单指派消息推送异常", ex);
+                    loger.Write("商家订单商家发货消息推送异常", ex);
                 }
             }
         }

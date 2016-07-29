@@ -9,5 +9,10 @@
         /// 服务启动
         /// </summary>
         void Start();
+
+        /// <summary>
+        /// 服务停止
+        /// </summary>
+        void Stop();
     }
 }

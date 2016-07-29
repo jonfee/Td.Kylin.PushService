@@ -3,7 +3,7 @@ using KylinPushService.Core;
 using KylinPushService.Core.Loger;
 using System;
 using System.Threading;
-using Td.Cache.Redis;
+using Td.Kylin.Redis;
 
 namespace KylinPushService.Welfare.Lottery
 {
@@ -29,7 +29,7 @@ namespace KylinPushService.Welfare.Lottery
                     }
 
                     //获取福利开奖结果推送接口配置信息
-                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.ShangMenCreate);
+                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.WelfareLottery);
 
                     if (null == apiConfig) continue;
 
@@ -48,7 +48,7 @@ namespace KylinPushService.Welfare.Lottery
                 catch (Exception ex)
                 {
                     //异常处理
-                    ExceptionLoger loger = new ExceptionLoger();
+                    ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                     loger.Write("福利中奖消息推送异常", ex);
                 }
             }
