@@ -14,6 +14,8 @@ namespace KylinPushService.Welfare.Lottery
     {
         public override void Execute()
         {
+            var ServiceTime = DateTime.Now;
+
             while (true)
             {
                 try
@@ -47,9 +49,15 @@ namespace KylinPushService.Welfare.Lottery
                 }
                 catch (Exception ex)
                 {
-                    //异常处理
-                    ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
+                    if (ServiceTime.AddHours(1) <= DateTime.Now)
+                    {
+                        ServiceTime = DateTime.Now;
+                        //异常处理
+                        ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
                     loger.Write("福利中奖消息推送异常", ex);
+                    }
+                    Thread.Sleep(100);
+                    continue;
                 }
             }
         }

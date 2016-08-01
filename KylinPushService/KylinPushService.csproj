@@ -124,6 +124,7 @@
     <Compile Include="LegworkOrder\Model\OrderOfferPushContent.cs" />
     <Compile Include="LegworkOrder\Model\PaymentCompletePushContent.cs" />
     <Compile Include="LegworkOrder\Model\RequestPaymentPushContent.cs" />
+    <Compile Include="LegworkOrder\PushService\MallLegworkerPushService.cs" />
     <Compile Include="LegworkOrder\PushService\MessageBuyPushService.cs" />
     <Compile Include="LegworkOrder\PushService\OrderConfirmPushService.cs" />
     <Compile Include="LegworkOrder\PushService\OrderDeliveryPushService.cs" />

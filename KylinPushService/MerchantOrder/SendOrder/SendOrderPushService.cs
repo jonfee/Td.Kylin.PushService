@@ -17,6 +17,8 @@ namespace KylinPushService.MerchantOrder.SendOrder
         /// </summary>
         public override void Execute()
         {
+            var ServiceTime = DateTime.Now;
+
             while (true)
             {
                 try
@@ -50,9 +52,16 @@ namespace KylinPushService.MerchantOrder.SendOrder
                 }
                 catch (Exception ex)
                 {
-                    //异常处理
-                    ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                    loger.Write("商家订单商家发货消息推送异常", ex);
+                    if (ServiceTime.AddHours(1) <= DateTime.Now)
+                    {
+                        ServiceTime = DateTime.Now;
+                        //异常处理
+                        ExceptionLoger loger =
+                            new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
+                        loger.Write("商家订单商家发货消息推送异常", ex);
+                    }
+                    Thread.Sleep(100);
+                    continue;
                 }
             }
         }

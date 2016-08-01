@@ -52,6 +52,10 @@ namespace KylinPushService.LegworkOrder
             /// </summary>
             public static string LegworkUserTopPay { get { return ConfigurationManager.AppSettings["LegworkUserTopPay"]; } }
             public static string LegworkMessageBuy { get { return ConfigurationManager.AppSettings["LegworkMessageBuy"]; } }
+            /// <summary>
+            /// B2C下单走跑腿流程推送给工作端
+            /// </summary>
+            public static string MallLegworkerPush { get { return ConfigurationManager.AppSettings["MallLegworkerPush"]; } }
         }
     }
 }

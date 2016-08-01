@@ -7,35 +7,36 @@ using System.Threading.Tasks;
 using KylinPushService.ConfigManager;
 using KylinPushService.Core;
 using KylinPushService.Core.Loger;
+using KylinPushService.LegworkOrder.Model;
 using Td.Kylin.Redis;
 
-namespace KylinPushService.MerchantOrder.UserMessageBuy
+namespace KylinPushService.LegworkOrder.PushService
 {
-    public class UserMessageBuyPushService : BaseMerchantOrderService
+    public class MallLegworkerPushService : BaseLegworkService
     {
+
         /// <summary>
         /// 执行
         /// </summary>
         public override void Execute()
         {
             var ServiceTime = DateTime.Now;
-
             while (true)
             {
                 try
                 {
-                    //从订单接单推送消息数据链表左边起获取一条数据
-                    UserMessageBuyContent content = RedisDB.ListLeftPop<UserMessageBuyContent>(MerchantOrderConfig.RedisKey.UserMessageBuy);
+                    //从预约订单推送消息数据链表左边起获取一条数据
+                    AssignOrderPushContent content = RedisDB.ListLeftPop<AssignOrderPushContent>(LegworkConfig.RedisKey.MallLegworkerPush);
 
                     //不存在，则休眠1秒钟，避免CPU空转
                     if (null == content)
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(100);
                         continue;
                     }
 
-                    //获取订单接单推送接口配置信息
-                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.UserMessageBuy);
+                    //获取预约订单推送接口配置信息
+                    var apiConfig = PushApiConfigManager.GetApiConfig(SysEnums.PushType.MallLegworkerPush);
 
                     if (null == apiConfig) continue;
 
@@ -49,17 +50,18 @@ namespace KylinPushService.MerchantOrder.UserMessageBuy
                     else if (apiConfig.Method == "post")
                     {
                         DefaultClient.DoPost(apiConfig.Url, dic, PushApiConfigManager.Config.ModuleID, PushApiConfigManager.Config.Secret);
+                        ExceptionLoger loger = new ExceptionLoger(@"/logs/Sccess" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
+                        loger.Success("B2C下单走跑腿流程推送给工作端", "推送结果:订单编号为“" + content.OrderCode + "”");
                     }
                 }
                 catch (Exception ex)
                 {
-                    if (ServiceTime.AddHours(1) <= DateTime.Now)
+                    if (ServiceTime.AddHours(1)>=DateTime.Now)
                     {
                         ServiceTime = DateTime.Now;
                         //异常处理
-                        ExceptionLoger loger =
-                            new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                        loger.Write("商家订单商家发货消息推送异常", ex);
+                        ExceptionLoger loger = new ExceptionLoger(@"/logs/Error" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
+                        loger.Write("B2C下单走跑腿流程推送给工作端，用户下单推送给工作端", ex);
                     }
                     Thread.Sleep(100);
                     continue;

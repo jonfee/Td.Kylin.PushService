@@ -69,6 +69,7 @@ namespace KylinPushService
         private PaymentCompletePushService _PaymentCompletePushService;
         private RequestPaymentPushService _RequestPaymentPushService;
         private MessageBuyPushService _MessageBuyPushService;
+        private MallLegworkerPushService _MallLegworkerPushService;
 
         #endregion
 
@@ -95,7 +96,8 @@ namespace KylinPushService
             lotteryService.Start();
             userMessageBuyService = new UserMessageBuyPushService();
             userMessageBuyService.Start();
-
+            _MallLegworkerPushService = new MallLegworkerPushService();
+            _MallLegworkerPushService.Start();
             _AssignOrderPushService = new AssignOrderPushService();
             _AssignOrderPushService.Start();
             _OrderConfirmPushService = new OrderConfirmPushService();
@@ -139,6 +141,7 @@ namespace KylinPushService
             _PaymentCompletePushService.Stop();
             _RequestPaymentPushService.Stop();
             _MessageBuyPushService.Stop();
+            _MallLegworkerPushService.Stop();
 
         }
     }
